@@ -156,7 +156,7 @@ void MyGlWindow::draw() {
     putText(getProjectileMode(), 10, 50, 0.5, 0.5, 1);
 }
 
-void MyGlWindow::test() {
+void MyGlWindow::resetTest() {
     if (!m_movers.empty()) {
         for (auto mover: m_movers) {
             mover.second->reset();
@@ -511,13 +511,9 @@ const char *MyGlWindow::getProjectileMode() const {
 }
 
 void MyGlWindow::step() {
-    TimingData::update();
-
-    float duration = 0.03f; // or 0.06
-
-    for (auto mover: m_movers) {
-        mover.second->update(duration);
-    }
+    run = 1;
+    update();
+    run = 0;
 
     std::cout << "step" << std::endl;
 }

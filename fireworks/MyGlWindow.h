@@ -68,7 +68,7 @@ public:
     void update();
     void drawStuff();
     void doPick();
-    void test();
+    void resetTest();
     int selected;
     void putText(const char *str, int x, int y, float r, float g, float b);
     void setProjectileMode() const;

@@ -46,11 +46,11 @@
 
 #include "MyGlWindow.h"
 
-Fl_Group *widgets;
-
 long lastRedraw;
 int frameRate = 60;
-Fl_Light_Button *test;
+
+Fl_Group *widgets;
+Fl_Light_Button *run_btn;
 
 void changeFrameCB(Fl_Widget *w, void *data) {
     Fl_Choice *widget = (Fl_Choice *) w;
@@ -62,7 +62,6 @@ void changeFrameCB(Fl_Widget *w, void *data) {
     win->redraw();
 }
 
-
 void idleCB(void *w) {
     MyGlWindow *win = (MyGlWindow *) w;
     if (clock() - lastRedraw > CLOCKS_PER_SEC / frameRate) {
@@ -71,7 +70,6 @@ void idleCB(void *w) {
     }
     win->redraw();
 }
-
 
 void but_cb(Fl_Widget *o, void *data) {
     Fl_Button *b = (Fl_Button *) o;
@@ -83,22 +81,21 @@ void but_cb(Fl_Widget *o, void *data) {
     win->damage(1);
 }
 
-
-void but_cb2(Fl_Widget *o, void *data) {
+void resetTest(Fl_Widget *o, void *data) {
     MyGlWindow *win = (MyGlWindow *) data;
-    win->test();
+    win->resetTest();
     win->damage(1);
 }
 
-void drawer_cb(Fl_Widget *o, void *data) {
+void objectMode(Fl_Widget *o, void *data) {
     MyGlWindow *win = (MyGlWindow *) data;
     win->setProjectileMode();
     win->damage(1);
 }
 
-void but_cb4(Fl_Widget *o, void *data) {
+void step(Fl_Widget *o, void *data) {
     MyGlWindow *win = (MyGlWindow *) data;
-    test->value(0); // turn off the run button first
+    run_btn->value(0); // turn off the run button first
     win->run = 0; // disable the run variable
     win->step(); // call step()
 }
@@ -133,24 +130,25 @@ int main() {
     choice->add("15");
     choice->add("30");
     choice->add("60");
+    choice->add("120");
+    choice->add("240");
     choice->value(2);
     choice->callback((Fl_Callback *) changeFrameCB, gl);
 
-    Fl_Light_Button *test = new Fl_Light_Button(width - 600, height - 40, 100, 20, "Run");
-    test->callback(but_cb, gl);
-    gl->ui = test;
+    run_btn = new Fl_Light_Button(width - 600, height - 40, 100, 20, "Run");
+    run_btn->callback(but_cb, gl);
+    gl->ui = run_btn;
 
-    Fl_Button *test2 = new Fl_Button(width - 400, height - 40, 100, 20, "Test");
-    test2->callback(but_cb2, gl);
+    Fl_Button *resetTestButton = new Fl_Button(width - 400, height - 40, 100, 20, "Reset_Test");
+    resetTestButton->callback(resetTest, gl);
 
-    Fl_Button *drawerButton = new Fl_Button(width - 200, height - 40, 100, 20, "Object_Mode");
-    drawerButton->callback(drawer_cb, gl);
+    Fl_Button *objectModeButton = new Fl_Button(width - 200, height - 40, 100, 20, "Object_Mode");
+    objectModeButton->callback(objectMode, gl);
 
     Fl_Button *stepButton = new Fl_Button(width - 100, height - 40, 100, 20, "Step");
-    stepButton->callback(but_cb4, gl);
-    gl->ui = test;
+    stepButton->callback(step, gl);
 
-    Fl_Button *fireworksButton = new Fl_Button(50, height - 40, 100, 20, "Fireworks");
+    Fl_Button *fireworksButton = new Fl_Button(width - 500, height - 40, 100, 20, "Fireworks");
     fireworksButton->callback(createFireworksCB, gl);
 
     wind->end();
