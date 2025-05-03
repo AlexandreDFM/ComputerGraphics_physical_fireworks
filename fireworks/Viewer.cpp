@@ -6,8 +6,8 @@
 #include <iostream>
 
 static float DEFAULT_TRANSLATE_SPEED = 0.5f; // Translation speed
-static float DEFAULT_ROTATE_SPEED = 2.0f;   // Rotation speed multiplier
-static float DEFAULT_ZOOM_FRACTION = 1.5f;  // Zoom magnitude
+static float DEFAULT_ROTATE_SPEED = 2.0f; // Rotation speed multiplier
+static float DEFAULT_ZOOM_FRACTION = 1.5f; // Zoom magnitude
 
 using namespace std;
 

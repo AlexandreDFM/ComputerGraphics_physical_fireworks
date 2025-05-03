@@ -43,9 +43,8 @@ public:
     cyclone::real damping; // Damping factor
     unsigned payloadCount; // Number of child fires spawned
 
-    void setParameters(unsigned type, cyclone::real minAge, cyclone::real maxAge,
-                       const cyclone::Vector3 &minVelocity, const cyclone::Vector3 &maxVelocity,
-                       cyclone::real damping, int count);
+    void setParameters(unsigned type, cyclone::real minAge, cyclone::real maxAge, const cyclone::Vector3 &minVelocity,
+                       const cyclone::Vector3 &maxVelocity, cyclone::real damping, int count);
 };
 
-#endif //FIREWORKSRULE_H
+#endif // FIREWORKSRULE_H

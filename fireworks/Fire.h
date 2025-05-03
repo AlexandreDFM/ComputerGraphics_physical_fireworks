@@ -29,10 +29,10 @@
 #define FIRE_H
 
 #include <deque>
-#include "Vec3f.h"
-#include "random.h"
-#include "particle.h"
 #include "FireworksRule.h"
+#include "Vec3f.h"
+#include "particle.h"
+#include "random.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>

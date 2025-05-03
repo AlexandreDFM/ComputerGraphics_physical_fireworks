@@ -52,9 +52,9 @@
 #include "MoverConnection.h"
 
 #include "3DUtils.h"
+#include "Fireworks.h"
 #include "Vec3f.h"
 #include "Viewer.h"
-#include "Fireworks.h"
 
 
 class MyGlWindow : public Fl_Gl_Window {

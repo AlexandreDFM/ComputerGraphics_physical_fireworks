@@ -101,7 +101,7 @@ void step(Fl_Widget *o, void *data) {
 }
 
 void createFireworksCB(Fl_Widget *o, void *data) {
-    MyGlWindow *win = (MyGlWindow *)data;
+    MyGlWindow *win = (MyGlWindow *) data;
     win->createFireworks();
     win->damage(1);
 }

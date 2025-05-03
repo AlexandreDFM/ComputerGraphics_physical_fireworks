@@ -25,8 +25,8 @@
  * THE SOFTWARE.
  */
 
-#include "Fireworks.h"
 #include "MyGlWindow.h"
+#include "Fireworks.h"
 #include "MoverFactory.h"
 
 #include <chrono>
@@ -474,7 +474,7 @@ void MyGlWindow::putText(const char *str, int x, int y, float r, float g, float 
 
     glDisable(GL_DEPTH_TEST);
 
-glColor3f(r, g, b);
+    glColor3f(r, g, b);
 
     drawStrokeText(str, x, y, 0);
 
