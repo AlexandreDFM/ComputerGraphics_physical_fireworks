@@ -41,10 +41,10 @@ endif()
 #file(GLOB SOURCES2 "${SOURCE_DIR2}/*.cpp")
 
 #execution file name
-set(PROJECT_NAME lab)
+set(PROJECT_NAME fireworksSimulation)
 
 #Current lab
-set(CURRENT lab_number_name)
+set(CURRENT fireworks)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -52,8 +52,6 @@ project(${PROJECT_NAME})
 
 find_package(FLTK CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
-
-find_package(GLUT REQUIRED)
 
 if (UNIX)
   find_package(FLTK REQUIRED)
