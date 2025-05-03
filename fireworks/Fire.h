@@ -1,8 +1,8 @@
 /**
- * File Name: MyGlWindow.h
+ * File Name: Fire.h
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 3/5/2025
- * Description: This is the MyGlWindow.h
+ * Creation Date: 4/5/2025
+ * Description: This is the Fire.h
  * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
@@ -25,69 +25,43 @@
  * THE SOFTWARE.
  */
 
-#define NOMINMAX
+#ifndef FIRE_H
+#define FIRE_H
 
-
-#include <FL/Fl.H>
-#include <FL/Fl_Gl_Window.H>
-#include <FL/Fl_Value_Slider.H>
+#include <deque>
+#include "Vec3f.h"
+#include "random.h"
+#include "particle.h"
+#include "FireworksRule.h"
 
 #if defined(_WIN32) || defined(_WIN64)
 #include <windows.h>
 #endif
 
-#include <FL/Fl_Double_Window.H>
-#include <FL/Fl_Light_Button.H>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GL/glut.h>
 
-#include "math.h"
-#include "stdio.h"
+class FireworksRule;
 
-#include <vector>
-#include "core.h"
-
-#include "Mover.h"
-#include "MoverConnection.h"
-
-#include "3DUtils.h"
-#include "Vec3f.h"
-#include "Viewer.h"
-#include "Fireworks.h"
-
-
-class MyGlWindow : public Fl_Gl_Window {
+class Fire {
 public:
-    MyGlWindow(int x, int y, int w, int h);
+    Fire(int type);
+    ~Fire();
 
-    Fl_Light_Button *ui;
-    Fl_Slider *time;
+    float m_size; // Fire size
+    int m_type; // Fire type (0 = Init Fire, 1 = Child Fire)
+    float m_age; // Fire's current age
+    cyclone::Particle *m_particle;
+    FireworksRule *m_rule; // Rule influencing this particle
+    cyclone::Vector3 m_color; // Fire color
+    std::deque<cyclone::Vector3> m_history; // Position history
 
-    int run;
-    void update();
-    void drawStuff();
-    void doPick();
-    void test();
-    int selected;
-    void putText(const char *str, int x, int y, float r, float g, float b);
-    void setProjectileMode() const;
-
-    const char *getProjectileMode() const;
-    void step();
-    void createFireworks();
-
-private:
-    void draw(); // standard FlTk
-    int handle(int); // standard FlTk
-
-    Viewer *m_viewer;
-    float fieldOfView;
-    std::map<int, Mover *> m_movers;
-    std::vector<MoverConnection *> m_moverConnection;
-    Fireworks *m_fireworks;
-
-    void setProjection(int clearProjection = 1);
-    void getMouseNDC(float &x, float &y);
-    void setupLight(float x, float y, float z);
+    bool update(float duration); // Update fire state
+    void draw(int shadow); // Draw fire
+    void drawHistory(); // Draw fire's history
+    void setRule(FireworksRule *r); // Set rule
+    void putHistory(); // Save current position in history
 };
+
+#endif // FIRE_H

@@ -103,6 +103,12 @@ void but_cb4(Fl_Widget *o, void *data) {
     win->step(); // call step()
 }
 
+void createFireworksCB(Fl_Widget *o, void *data) {
+    MyGlWindow *win = (MyGlWindow *)data;
+    win->createFireworks();
+    win->damage(1);
+}
+
 int main() {
     // plastic
     Fl::scheme("plastic");
@@ -143,6 +149,9 @@ int main() {
     Fl_Button *stepButton = new Fl_Button(width - 100, height - 40, 100, 20, "Step");
     stepButton->callback(but_cb4, gl);
     gl->ui = test;
+
+    Fl_Button *fireworksButton = new Fl_Button(50, height - 40, 100, 20, "Fireworks");
+    fireworksButton->callback(createFireworksCB, gl);
 
     wind->end();
 

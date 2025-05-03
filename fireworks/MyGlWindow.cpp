@@ -25,6 +25,7 @@
  * THE SOFTWARE.
  */
 
+#include "Fireworks.h"
 #include "MyGlWindow.h"
 #include "MoverFactory.h"
 
@@ -53,14 +54,14 @@ MyGlWindow::MyGlWindow(int x, int y, int w, int h) : Fl_Gl_Window(x, y, w, h) {
     float aspect = (static_cast<float>(w) / static_cast<float>(h));
     m_viewer = new Viewer(viewPoint, viewCenter, upVector, 45.0f, aspect);
 
-    // Use the factory to create Movers
-    MoverFactory& factory = MoverFactory::getInstance();
-    Mover* first_object = factory.createMover(cyclone::Vector3(0, 2, 0));
+    MoverFactory &factory = MoverFactory::getInstance();
     m_movers = factory.getMovers();
 
     TimingData::init();
     run = 0;
     selected = -1;
+
+    m_fireworks = new Fireworks();
 }
 
 void MyGlWindow::setupLight(float x, float y, float z) {
@@ -119,15 +120,11 @@ void MyGlWindow::draw() {
 
     glViewport(0, 0, w(), h());
 
-    // clear the window, be sure to clear the Z-Buffer too
-    glClearColor(0.2f, 0.2f, .2f, 0); // background should be blue
-
+    glClearColor(0.2f, 0.2f, 0.2f, 0);
 
     glClearStencil(0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     glEnable(GL_DEPTH);
-
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
     // now draw the ground plane
     setProjection();
@@ -139,67 +136,24 @@ void MyGlWindow::draw() {
 
     setupLight(m_viewer->getViewPoint().x, m_viewer->getViewPoint().y, m_viewer->getViewPoint().z);
 
-    // Add a sphere to the scene.
-    // Draw axises
-    glLineWidth(3.0f);
-    glBegin(GL_LINES);
-    glColor3f(1, 0, 0);
-
-    glVertex3f(0.0f, 0.1f, 0.0f);
-    glVertex3f(0.0f, 100.0f, 0.0f);
-
-    glColor3f(0.0f, 1.0f, 0.0f);
-
-    glVertex3f(0.0f, 0.1f, 0.0f);
-    glVertex3f(100.0f, 0.1f, 0.0f);
-
-    glColor3f(0.0f, 0.0f, 1.0f);
-
-    glVertex3f(0.0f, 0.1f, 0.0f);
-    glVertex3f(0.0f, 0.1f, 100.0f);
-    glEnd();
-    glLineWidth(1.0f);
-
     glDisable(GL_LIGHTING);
     glEnable(GL_BLEND);
-    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
 
     // Draw shadow
     setupShadows();
-    if (!m_movers.empty()) {
-        for (auto mover: m_movers) {
-            mover.second->draw(1);
-        }
-    }
-    if (!m_moverConnection.empty()) {
-        for (auto &mover: m_moverConnection) {
-            mover->draw(1);
-        }
+    if (m_fireworks) {
+        m_fireworks->draw(1);
     }
     unsetupShadows();
 
     glDisable(GL_BLEND);
 
-    // Draw objects
-    glPushMatrix();
-    if (!m_movers.empty()) {
-        for (auto mover: m_movers) {
-            mover.second->draw(0);
-        }
+    if (m_fireworks) {
+        m_fireworks->draw(0);
     }
-    if (!m_moverConnection.empty()) {
-        for (auto &mover: m_moverConnection) {
-            mover->draw(0);
-        }
-    }
-    glPopMatrix();
 
     putText("STUDENT_ID_AND_NAME", 10, 10, 0.5, 0.5, 1);
     putText(getProjectileMode(), 10, 50, 0.5, 0.5, 1);
-
-    glViewport(0, 0, w(), h());
-    setProjection();
-    glEnable(GL_COLOR_MATERIAL);
 }
 
 void MyGlWindow::test() {
@@ -232,9 +186,15 @@ void MyGlWindow::update() {
     if (duration <= 0.0f)
         return;
 
-    if (!m_movers.empty())
-        for (const auto mover: m_movers)
+    if (m_fireworks) {
+        m_fireworks->update(duration);
+    }
+
+    if (!m_movers.empty()) {
+        for (const auto mover: m_movers) {
             mover.second->update(duration);
+        }
+    }
 
     if (!m_moverConnection.empty()) {
         for (auto &mover: m_moverConnection) {
@@ -514,7 +474,7 @@ void MyGlWindow::putText(const char *str, int x, int y, float r, float g, float 
 
     glDisable(GL_DEPTH_TEST);
 
-    glColor3f(r, g, b);
+glColor3f(r, g, b);
 
     drawStrokeText(str, x, y, 0);
 
@@ -560,4 +520,10 @@ void MyGlWindow::step() {
     }
 
     std::cout << "step" << std::endl;
+}
+
+void MyGlWindow::createFireworks() {
+    if (m_fireworks) {
+        m_fireworks->create();
+    }
 }
