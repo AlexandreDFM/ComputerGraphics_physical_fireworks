@@ -38,13 +38,13 @@ public:
     ~Fireworks();
 
     void update(float duration); // Update all fires
-    void create();               // Create initial fires
-    void create(Fire *parent);   // Create child fires
-    void draw(int shadow);       // Draw all fires
+    void create(); // Create initial fires
+    void create(Fire *parent); // Create child fires
+    void draw(int shadow); // Draw all fires
     void drawHistory();
 
-    FireworksRule m_rule[3]; // Rules for fire behavior
+    FireworksRule m_rule[4]; // Rules for fire behavior
     std::vector<Fire *> fireworks; // Container for all fires
 };
 
-#endif //FIREWORKS_H
+#endif // FIREWORKS_H

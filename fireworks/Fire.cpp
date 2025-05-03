@@ -40,14 +40,15 @@ Fire::Fire(int type) : m_type(type), m_size(0.5f), m_age(5.0f), m_particle(nullp
     m_color = randomGenerator.randomVector(cyclone::Vector3(0.0f, 0.0f, 0.0f), cyclone::Vector3(1.0f, 1.0f, 1.0f));
 }
 
-Fire::~Fire() {
-    delete m_particle;
-}
+Fire::~Fire() { delete m_particle; }
 
 bool Fire::update(float duration) {
     if (m_particle) {
         m_particle->integrate(duration);
         putHistory();
+        if (m_type == 0 && m_particle->getVelocity().y <= 0) {
+            return true;
+        }
     }
     m_age -= duration;
     return (m_age < 0 || m_particle->getPosition().y < 0);
@@ -61,7 +62,12 @@ void Fire::draw(int shadow) {
         if (shadow) {
             glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
         } else {
-            glColor3f(m_color.x, m_color.y, m_color.z);
+            float alpha = max(0.0f, m_age / 5.0f);
+            glColor4f(m_color.x, m_color.y, m_color.z, alpha);
+
+            if (rand() % 2 == 0) {
+                glColor4f(m_color.x * 0.8f, m_color.y * 0.8f, m_color.z * 0.8f, alpha);
+            }
         }
         glutSolidSphere(m_size, 20, 20);
         glPopMatrix();
@@ -81,13 +87,11 @@ void Fire::putHistory() {
 void Fire::drawHistory() {
     glLineWidth(2.0f);
     glBegin(GL_LINE_STRIP);
-    for (const auto &pos : m_history) {
+    for (const auto &pos: m_history) {
         glVertex3f(pos.x, pos.y, pos.z);
     }
     glEnd();
     glLineWidth(1.0f);
 }
 
-void Fire::setRule(FireworksRule *r) {
-    m_rule = r;
-}
+void Fire::setRule(FireworksRule *r) { m_rule = r; }
