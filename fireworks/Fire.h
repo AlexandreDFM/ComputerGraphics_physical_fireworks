@@ -46,15 +46,17 @@ class FireworksRule;
 
 class Fire {
 public:
-    Fire(int type);
+    explicit Fire(int type);
     ~Fire();
 
     float m_size; // Fire size
     int m_type; // Fire type (0 = Init Fire, 1 = Child Fire)
     float m_age; // Fire's current age
+    float m_initialAge; // Fire's initial age
     cyclone::Particle *m_particle;
     FireworksRule *m_rule; // Rule influencing this particle
-    cyclone::Vector3 m_color; // Fire color
+    cyclone::Vector3 m_baseColor; // Fire Base color
+    cyclone::Vector3 m_currentColor; // Fire Current color
     std::deque<cyclone::Vector3> m_history; // Position history
 
     bool update(float duration); // Update fire state

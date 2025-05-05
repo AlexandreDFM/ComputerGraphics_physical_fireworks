@@ -146,7 +146,7 @@ void Fireworks::create(Fire *parent) {
                                                                         cyclone::Vector3(0.5f, 0.5f, 0.5f)));
             child->m_particle->setAcceleration(randomGenerator.randomVector(cyclone::Vector3(0.0f, -0.1f, 0.0f),
                                                                             cyclone::Vector3(0.0f, -0.8f, 0.0f)));
-            child->m_color = cyclone::Vector3(0.0f, 1.0f, 0.0f);
+            child->m_currentColor = cyclone::Vector3(0.0f, 1.0f, 0.0f);
         }
         if (rule->type != 3) {
             child->m_particle->setVelocity(velocity);
