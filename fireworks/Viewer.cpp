@@ -178,6 +178,6 @@ void Viewer::getFrustrumInfo() {
     m_imagePlaneHorizDir = glm::normalize(m_imagePlaneHorizDir);
 
     // Get the view plane width and height at the view center.
-    m_displayHeight = 2.0 * glm::length(m_viewCenter - m_viewPoint) * tan(Convert(0.5 * m_fieldOfView));
+    m_displayHeight = 2.0f * glm::length(m_viewCenter - m_viewPoint) * tan(Convert(0.5 * m_fieldOfView));
     m_displayWidth = m_displayHeight * m_aspectRatio;
 }
