@@ -70,7 +70,11 @@ void Fire::draw(int shadow) {
         if (shadow) {
             glColor4f(0.1f, 0.1f, 0.1f, 0.5f);
         } else {
+            #if defined(_WIN32) || defined(_WIN64)
             float alpha = max(0.0f, m_age / 5.0f);
+            #elif defined(__unix)
+            float alpha = std::max(0.0f, m_age / 5.0f);
+            #endif
             glColor4f(static_cast<float>(m_currentColor.x), static_cast<float>(m_currentColor.y), static_cast<float>(m_currentColor.z), alpha);
 
             if (rand() % 2 == 0) {
